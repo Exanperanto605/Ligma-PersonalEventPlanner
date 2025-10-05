@@ -11,7 +11,7 @@ function App() {
             alert(`Welcome ${user.displayName}`);   // Placeholder
         } catch (error) {
             // alert(error.message);   // Placeholder
-            unauthorized();     // Redirect to 401
+            unauthorized();     // Redirect to 401  -> Error Page is customizable via `unauthorized.js` file.
         }
     };
 
