@@ -2,7 +2,7 @@ import React from "react";
 import { UserAuth } from "../UserAuthContext";
 
 const page = () => {
-    const { user, loginWithGoogle, logout } = UserAuth();
+    const { loginWithGoogle } = UserAuth();
 
     const handleSignIn = async () => {
         try {
@@ -16,7 +16,7 @@ const page = () => {
 
     return (
         <div className='test-auth-container'>
-            <button name="GoogleLogIn" onClick={ handleSignIn }>Login with Google</button>
+            <button className="cursor-pointer" onClick={ handleSignIn }>Login with Google</button>
         </div>
     );
 };
