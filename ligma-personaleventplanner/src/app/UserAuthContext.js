@@ -21,6 +21,10 @@ export const UserAuth = ({ children }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currectUser) => {
             setUser(currectUser);
+            const userId = currectUser.uid;
+            const userName = currectUser.displayName;
+            const userEmail = currectUser.email;
+            const userPFP = currectUser.photoURL;
         });
 
         return () => unsubscribe();
