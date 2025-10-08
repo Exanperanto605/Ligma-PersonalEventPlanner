@@ -31,7 +31,7 @@ export const UserAuth = ({ children }) => {
     );
 };
 
-function displayUserInfo() {
+export function displayUserInfo() {
     const currUser = useContext(UserAuthContext);
 
     useEffect(() => {
