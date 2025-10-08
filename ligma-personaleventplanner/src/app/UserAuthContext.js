@@ -21,10 +21,6 @@ export const UserAuth = ({ children }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currectUser) => {
             setUser(currectUser);
-            const userId = currectUser.uid;
-            const userName = currectUser.displayName;
-            const userEmail = currectUser.email;
-            const userPFP = currectUser.photoURL;
         });
 
         return () => unsubscribe();
@@ -34,3 +30,25 @@ export const UserAuth = ({ children }) => {
         <UserAuthContext.Provider value={{ user, loginWithGoogle, logout }}>{children}</UserAuthContext.Provider>
     );
 };
+
+function displayUserInfo() {
+    const currUser = useContext(UserAuthContext);
+
+    useEffect(() => {
+        const userId = currUser?.uid;
+        const userName = currUser?.displayName;
+        const userEmail = currUser?.email;
+        const userPFP = currUser?.photoURL;
+
+        console.log(`User ID: ${userId}`);
+        console.log(`User Photo: ${userPFP}`);
+        console.log(`Display Name: ${userName}`);
+        console.log(`Email: ${userEmail}`);
+
+        document.getElementById("userName").textContent = userName;
+        document.getElementById("userProfilePicture").src = userPFP;
+        document.getElementById("userEmail").textContent = userEmail;
+    }, [currUser]);
+    
+    return null;
+}
