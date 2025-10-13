@@ -7,7 +7,7 @@ import { redirect, RedirectType } from 'next/navigation'
 export default function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
 
-    const loginWithGoogle = async () => {
+    const signInWithGoogle = async () => {
         try {
             const result = await signInWithPopup(auth, googleAuthProvider);
             setUser(result.user);
@@ -32,6 +32,6 @@ export default function AuthProvider({ children }) {
     }, [user]);
 
     return (
-        <UserAuthContext.Provider value={{ user, loginWithGoogle, logout }}>{children}</UserAuthContext.Provider>
+        <UserAuthContext.Provider value={{ user, signInWithGoogle, logOut }}>{children}</UserAuthContext.Provider>
     );
 }
