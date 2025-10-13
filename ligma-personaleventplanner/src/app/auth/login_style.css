@@ -1,0 +1,5 @@
+.div {
+    & > .lighttheme {
+        border: 5px 
+    }
+}

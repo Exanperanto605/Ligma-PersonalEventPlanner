@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { UserAuth } from "../UserAuthContext";
 import { redirect, RedirectType } from 'next/navigation'
 
-const page = () => {
+const auth_page = () => {
     const { user, loginWithGoogle } = UserAuth();
     const [loading, setLoading] = useState(true);
 
