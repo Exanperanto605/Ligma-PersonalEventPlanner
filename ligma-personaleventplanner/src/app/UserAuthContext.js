@@ -1,5 +1,5 @@
 import React from 'react';
-import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 import { useContext, createContext, useState, useEffect } from "react";
 import { auth } from '../firebaseConfig';
 // import { unauthorized } from 'next/navigation'
