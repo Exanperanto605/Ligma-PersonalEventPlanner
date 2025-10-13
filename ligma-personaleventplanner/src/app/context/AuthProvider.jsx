@@ -1,6 +1,6 @@
 import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from "react";
-import { auth, googleAuthProvider } from '../firebaseConfig';
+import { auth, googleAuthProvider } from './firebaseConfig.js';
 import { UserAuthContext } from './auth-context';
 import { redirect, RedirectType } from 'next/navigation'
 

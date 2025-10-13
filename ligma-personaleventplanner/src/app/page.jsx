@@ -1,6 +1,8 @@
+"use client";
+
 import { useContext } from "react";
-import AuthProvider from "../context/AuthProvider";
-import { UserAuthContext } from "../context/auth-context";
+import AuthProvider from "./context/AuthProvider";
+import { UserAuthContext } from "./context/auth-context";
 import styles from "./styles/auth_style.module.css";
 
 function AuthContent() {
@@ -15,16 +17,16 @@ function AuthContent() {
             ) : (
                 <div className={styles.container}>
                     <div className={styles.card}>
-                        <h1 className={styles.name-h1}>Ligma</h1>
+                        <h1 className={styles.nameh1}>Ligma</h1>
                         <div className={styles.subtitle}>Your Personal Event Planner</div>
                         <form>
-                            <div className={styles.input-group}>
-                                <label for="email">Email</label>
+                            <div className={styles.inputgroup}>
+                                <label htmlFor="email">Email</label>
                                 <input id="email" type="email" placeholder="something@email.smth" required />
                             </div>
 
-                            <div className={styles.input-group}>
-                                <label for="password">Password</label>
+                            <div className={styles.inputgroup}>
+                                <label htmlFor="password">Password</label>
                                 <input id="password" type="password" placeholder="Password" required />
                             </div>
 
