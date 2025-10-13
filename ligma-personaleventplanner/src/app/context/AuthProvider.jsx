@@ -13,7 +13,7 @@ export default function AuthProvider({ children }) {
             setUser(result.user);
         } catch (error) {
             console.error(`Sign-in error: ${error}`);
-            redirect('/placeholder401Page', RedirectType.replace); // Redirect to 401
+            redirect('/401Page', RedirectType.replace); // Redirect to 401
                                                                    // -> change `placeholder401Page` to the dedicated 401 page
         }
     };
