@@ -80,7 +80,7 @@ input:focus {
     text-decoration: none;
 }
 
-.link a:hover {
+a:hover {
     text-decoration: underline;
 }
 
