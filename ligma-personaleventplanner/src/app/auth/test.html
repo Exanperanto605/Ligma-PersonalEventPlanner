@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ligma — Sign In</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --accent: #6366f1;
+      --muted: #94a3b8;
+      --radius: 12px;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #e2e8f0;
+    }
+    .card {
+      background: var(--card);
+      padding: 40px 36px;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      width: 360px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 28px;
+      margin: 0;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+    .input-group {
+      text-align: left;
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: border 0.2s ease;
+    }
+    input:focus {
+      border-color: var(--accent);
+    }
+    .links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      margin-bottom: 24px;
+    }
+    a {
+      color: var(--accent);
+      font-size: 13px;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    button {
+      width: 100%;
+      background: var(--accent);
+      border: none;
+      border-radius: var(--radius);
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 12px 0;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    button:hover {
+      background: #4f46e5;
+    }
+    @media (max-width: 480px) {
+      .card {
+        width: 90%;
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Ligma</h1>
+    <div class="subtitle">Your Personal Event Planner</div>
+
+    <form>
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="something@email.smth" required />
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="Password" required />
+      </div>
+
+      <div class="links">
+        <a href="#">Forgot password?</a>
+        <a href="#">Register</a>
+      </div>
+
+      <button type="submit">Sign In</button>
+    </form>
+  </div>
+</body>
+</html>
