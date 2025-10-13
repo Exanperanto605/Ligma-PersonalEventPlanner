@@ -74,7 +74,7 @@ input:focus {
     margin-bottom: 24px;
 }
 
-.link a {
+.links a {
     color: var(--accent);
     font-size: 13px;
     text-decoration: none;
