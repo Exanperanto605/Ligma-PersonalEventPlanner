@@ -28,7 +28,7 @@
     text-align: center;
 }
 
-h1 {
+.name-h1 {
     font-size: 45px;
     margin: 0;
 }
@@ -44,14 +44,14 @@ h1 {
     margin-bottom: 16px;
 }
 
-label {
+.input-group label {
     display: block;
     font-size: 13px;
     color: var(--muted);
     margin-bottom: 6px;
 }
 
-input {
+.input-group input {
     width: 100%;
     padding: 10px 12px;
     border-radius: var(--radius);
@@ -74,13 +74,13 @@ input:focus {
     margin-bottom: 24px;
 }
 
-a {
+.link a {
     color: var(--accent);
     font-size: 13px;
     text-decoration: none;
 }
 
-a:hover {
+.link a:hover {
     text-decoration: underline;
 }
 

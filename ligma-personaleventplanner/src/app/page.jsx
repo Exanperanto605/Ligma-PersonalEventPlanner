@@ -15,7 +15,7 @@ function AuthContent() {
             ) : (
                 <div className={styles.container}>
                     <div className={styles.card}>
-                        <h1>Ligma</h1>
+                        <h1 className={styles.name-h1}>Ligma</h1>
                         <div className={styles.subtitle}>Your Personal Event Planner</div>
                         <form>
                             <div className={styles.input-group}>
