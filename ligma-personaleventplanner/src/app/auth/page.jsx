@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import AuthProvider from "../context/AuthProvider";
 import { UserAuthContext } from "../context/auth-context";
-import { displayUserInfo } from "../context/display";
 
 function AuthContent() {
     const { user, signInWithGoogle, signOut } = useContext(UserAuthContext);
@@ -10,7 +9,6 @@ function AuthContent() {
         <div>
             { user ? (
                 <>
-                    <displayUserInfo />
                     <button onClick={signOut}>Sign Out</button>
                 </>
             ) : (
@@ -22,8 +20,8 @@ function AuthContent() {
 
 export default function AuthPage() {
     return (
-        <UserAuthContext>
+        <AuthProvider>
             <AuthContent />
-        </UserAuthContext>
+        </AuthProvider>
     )
 }
