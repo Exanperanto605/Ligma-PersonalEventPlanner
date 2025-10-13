@@ -30,12 +30,13 @@
 
 .nameh1 {
     font-size: 45px;
+    font-weight: 600;
     margin: 0;
 }
 
 .subtitle {
     color: var(--muted);
-    font-size: 14px;
+    font-size: 16px;
     margin-bottom: 28px;
 }
 
@@ -46,7 +47,8 @@
 
 .inputgroup label {
     display: block;
-    font-size: 13px;
+    font-size: 15px;
+    font-weight: 500;
     color: var(--muted);
     margin-bottom: 6px;
 }
