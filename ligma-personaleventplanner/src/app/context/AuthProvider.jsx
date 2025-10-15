@@ -1,37 +1,42 @@
-import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
+"use client";
+
+import { signInWithPopup, signOut as firebaseSignOut, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from "react";
 import { auth, googleAuthProvider } from './firebaseConfig.js';
 import { UserAuthContext } from './auth-context';
-import { redirect, RedirectType } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 
 export default function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
+    const router = useRouter();
 
     const signInWithGoogle = async () => {
         try {
             const result = await signInWithPopup(auth, googleAuthProvider);
             setUser(result.user);
+            return result;
         } catch (error) {
             console.error(`Sign-in error: ${error}`);
-            redirect('/401', RedirectType.replace); // Redirect to 401
-                                                                   // -> change `placeholder401Page` to the dedicated 401 page
+            // client-side navigation to an unauthorized page (optional)
+            try { router.push('/401'); } catch(e) { /* ignore */ }
+            throw error;
         }
     };
 
-    const logOut = async () => {
-        await signOut(auth);
+    const signOut = async () => {
+        await firebaseSignOut(auth);
         setUser(null);
     };
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currectUser) => {
-            setUser(currectUser);
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
         });
 
         return () => unsubscribe();
-    }, [user]);
+    }, []);
 
     return (
-        <UserAuthContext.Provider value={{ user, signInWithGoogle, logOut }}>{children}</UserAuthContext.Provider>
+        <UserAuthContext.Provider value={{ user, signInWithGoogle, signOut }}>{children}</UserAuthContext.Provider>
     );
 }

@@ -1,18 +1,41 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import AuthProvider from "./context/AuthProvider";
 import { UserAuthContext } from "./context/auth-context";
 import styles from "./styles/auth_style.module.css";
 
 function AuthContent() {
     const { user, signInWithGoogle, signOut } = useContext(UserAuthContext);
+    const router = useRouter();
+    
+    // If user is authenticated, navigate to dashboard after render
+    useEffect(() => {
+        if (user) {
+            try { router.replace('/calendar/view'); } catch (e) { /* ignore */ }
+        }
+    }, [user, router]);
+
+    if (user) return <div>Redirecting to dashboard...</div>;
+
+    const handleGoogleSignIn = async () => {
+        try {
+            await signInWithGoogle();
+            router.push('/calendar/view');
+        } catch (err) {
+            console.error('Google sign-in failed', err);
+        }
+    };
 
     return (
         <div>
             { user ? (
                 <>
-                    <button onClick={signOut}>Sign Out</button>
+                    <div>
+                        <button onClick={signOut}>Sign Out</button>
+                        <a style={{ marginLeft: 12 }} href="/calendar/view">Open Dashboard</a>
+                    </div>
                 </>
             ) : (
                 <div className={styles.container}>
@@ -37,7 +60,7 @@ function AuthContent() {
 
                             <button className={styles.submitEmail} type="submit">Sign In</button>
                         </form>
-                        <button onClick={signInWithGoogle} className={styles.signInGoogle}>Sign In With Google</button>
+                        <button onClick={handleGoogleSignIn} className={styles.signInGoogle}>Sign In With Google</button>
                     </div>
                 </div>
             )}
