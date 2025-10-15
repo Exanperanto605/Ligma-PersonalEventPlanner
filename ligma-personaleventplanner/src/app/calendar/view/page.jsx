@@ -152,7 +152,7 @@ export default function CalendarViewPage() {
       case "Daily":
         return "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
       case "Work":
-        return "bg-[#6366f1]/20 text-[#818cf8] border-[#6366f1]/30"
+        return "bg-[#4285f4]/20 text-[#4285f4] border-[#4285f4]/30"
       case "Party":
         return "bg-amber-500/20 text-amber-400 border-amber-500/30"
       default:
@@ -165,7 +165,7 @@ export default function CalendarViewPage() {
       case "Daily":
         return "bg-emerald-500"
       case "Work":
-        return "bg-[#6366f1]"
+        return "bg-[#4285f4]"
       case "Party":
         return "bg-amber-500"
       default:
@@ -206,10 +206,10 @@ export default function CalendarViewPage() {
                       ${!day ? "invisible" : ""}
                       ${
                         day === selectedDay
-                          ? "bg-[#6366f1] text-white"
+                          ? "bg-[#4285f4] text-white"
                           : isToday(day)
-                            ? "bg-[#6366f1]/20 text-[#818cf8]"
-                            : "text-gray-400 hover:bg-[#6366f1]/10"
+                            ? "bg-[#4285f4]/20 text-[#4285f4]"
+                            : "text-gray-400 hover:bg-[#4285f4]/10"
                       }
                     `}
                   >
@@ -331,8 +331,11 @@ export default function CalendarViewPage() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="h-8 w-8 rounded-full p-0">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src="/placeholder-user.jpg" />
-                    <AvatarFallback>U</AvatarFallback>
+                    <AvatarImage src={user?.photoURL} alt={user?.displayName || user?.email} />
+                    <AvatarFallback>
+                      {user?.displayName ? user.displayName[0].toUpperCase() : 
+                       user?.email ? user.email[0].toUpperCase() : 'U'}
+                    </AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
@@ -391,7 +394,7 @@ export default function CalendarViewPage() {
                           <>
                             {/* Day number and badges */}
                             <div className="flex items-start justify-between mb-2">
-                              <span className={`text-sm font-medium ${isToday(day) ? "text-blue-400" : ""}`}>
+                              <span className={`text-sm font-medium ${isToday(day) ? "text-[#4285f4]" : ""}`}>
                                 {day < 10 ? `0${day}` : day}
                               </span>
                               <div className="flex flex-wrap gap-1">
@@ -404,7 +407,7 @@ export default function CalendarViewPage() {
                                 {hasWork && (
                                   <div className="flex items-center gap-1">
                                     <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                                    <span className="text-[10px] text-blue-400">Work</span>
+                                    <span className="text-[10px] text-[#4285f4]">Work</span>
                                   </div>
                                 )}
                                 {hasParty && (
@@ -428,7 +431,7 @@ export default function CalendarViewPage() {
                                 </div>
                               ))}
                               {moreCount > 0 && (
-                                <button className="text-xs text-blue-400 hover:text-blue-300">+{moreCount} More</button>
+                                <button className="text-xs text-[#4285f4] hover:text-[#357ABD]">+{moreCount} More</button>
                               )}
                             </div>
                           </>

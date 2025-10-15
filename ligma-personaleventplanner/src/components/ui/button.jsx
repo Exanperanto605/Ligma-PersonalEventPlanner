@@ -4,9 +4,9 @@ const Button = ({ children, variant = "default", size = "default", className = "
   const baseStyles = "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 disabled:pointer-events-none disabled:opacity-50"
   
   const variants = {
-    default: "bg-[#6366f1] text-white hover:bg-[#4f46e5]",
-    ghost: "hover:bg-[#6366f1]/10 hover:text-[#6366f1]",
-    outline: "border border-[#6366f1]/20 hover:bg-[#6366f1]/10 hover:text-[#6366f1]",
+    default: "bg-[#4285f4] text-white hover:bg-[#4285f4] hover:opacity-90",
+    ghost: "hover:bg-[#4285f4]/10 hover:text-[#4285f4]",
+    outline: "border border-[#4285f4]/20 hover:bg-[#4285f4]/10 hover:text-[#4285f4]",
   }
 
   const sizes = {

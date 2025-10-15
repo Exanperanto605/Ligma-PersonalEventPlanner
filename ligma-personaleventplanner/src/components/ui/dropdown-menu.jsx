@@ -39,7 +39,7 @@ const DropdownMenuContent = ({ children, align = "center", className = "" }) => 
 
   return (
     <div 
-      className={`absolute z-50 top-full mt-1 min-w-[8rem] overflow-hidden rounded-md border border-gray-800 bg-gray-900 p-1 shadow-md ${alignClasses[align]} ${className}`}
+      className={`absolute z-50 top-full mt-1 min-w-[8rem] overflow-hidden rounded-md border border-[#4285f4]/20 bg-[#1c1c1c] p-1 shadow-md ${alignClasses[align]} ${className}`}
       onClick={(e) => e.stopPropagation()}
     >
       {children}
@@ -49,7 +49,7 @@ const DropdownMenuContent = ({ children, align = "center", className = "" }) => 
 
 const DropdownMenuItem = ({ children, className = "", ...props }) => (
   <button
-    className={`relative flex w-full items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-gray-800 ${className}`}
+    className={`relative flex w-full items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-[#4285f4]/10 ${className}`}
     {...props}
   >
     {children}
