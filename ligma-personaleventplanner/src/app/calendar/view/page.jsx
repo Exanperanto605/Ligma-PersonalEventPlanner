@@ -41,6 +41,17 @@ export default function CalendarViewPage() {
     }
   }, [user, router, isE2E])
 
+  // E2E helper: auto open add modal via query param `?autoOpenAdd=1`
+  useEffect(() => {
+    if (!isE2E) return
+    try {
+      const u = new URL(window.location.href)
+      if (u.searchParams.get('autoOpenAdd') === '1') {
+        setIsAddOpen(true)
+      }
+    } catch { /* ignore */ }
+  }, [isE2E])
+
   const todayInit = new Date()
   const [selectedDay, setSelectedDay] = useState(todayInit.getDate())
   const [selectedMonth, setSelectedMonth] = useState(todayInit.getMonth())
@@ -430,7 +441,36 @@ export default function CalendarViewPage() {
       frequency: Object.entries(frequency).filter(([_, v]) => v).map(([k]) => k),
     }
     try { if (user?.uid) addUserEvent(user.uid, payload) } catch (_) { /* ignore */ }
+    // In E2E mode, also update local state so tests don't rely on Firestore latency
+    try {
+      if (isE2E) {
+        const dt = startDate ? new Date(startDate) : new Date(currentYear, currentMonth, selectedDay)
+        const monthKey2 = `${dt.getMonth()+1}-${dt.getFullYear()}`
+        const day2 = dt.getDate()
+        const ev = {
+          id,
+          name: payload.name,
+          time: payload.time,
+          type: payload.type,
+          eventColor: payload.eventColor,
+          startDate: payload.startDate,
+          endDate: payload.endDate,
+          startTime: payload.startTime,
+          endTime: payload.endTime,
+          frequency: payload.frequency,
+        }
+        setEventsData(prev => {
+          const next = { ...prev }
+          if (!next[monthKey2]) next[monthKey2] = {}
+          const arr = (next[monthKey2][day2] || []).slice()
+          arr.push(ev)
+          next[monthKey2][day2] = arr
+          return next
+        })
+      }
+    } catch {}
     setIsAddOpen(false)
+    setToast({ message: "Event added", variant: "success" })
   }
 
   const openEdit = (event) => {

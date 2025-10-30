@@ -5,7 +5,7 @@ export default defineConfig({
   timeout: 30000,
   expect: { timeout: 5000 },
   use: {
-    baseURL: process.env.BASE_URL || 'http://localhost:3000',
+    baseURL: process.env.BASE_URL || 'http://localhost:3030',
     trace: 'on-first-retry',
     video: 'retain-on-failure',
     screenshot: 'only-on-failure',
@@ -14,10 +14,10 @@ export default defineConfig({
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
   ],
   webServer: process.env.CI ? undefined : {
-    command: 'set NEXT_PUBLIC_E2E_TEST=1&& npm run dev',
-    port: 3000,
-    reuseExistingServer: true,
+    command: 'npm run dev -- -p 3030',
+    port: 3030,
+    reuseExistingServer: false,
     timeout: 120000,
+    env: { NEXT_PUBLIC_E2E_TEST: '1' },
   },
 });
-
