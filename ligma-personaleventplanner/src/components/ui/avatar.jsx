@@ -7,18 +7,25 @@ const Avatar = ({ className = "", ...props }) => (
   />
 )
 
-const AvatarImage = ({ className = "", src, alt = "", ...props }) => (
-  <img
-    className={`aspect-square h-full w-full object-cover rounded-full ${className}`}
-    loading="eager"
-    src={src}
-    alt={alt}
-    onError={(e) => {
-      e.target.style.display = 'none';
-    }}
-    {...props}
-  />
-);
+const AvatarImage = ({ className = "", src, alt = "", ...props }) => {
+  if (!src) return null
+  return (
+    <img
+      className={`aspect-square h-full w-full object-cover rounded-full ${className}`}
+      loading="eager"
+      decoding="async"
+      fetchPriority="low"
+      referrerPolicy="no-referrer"
+      crossOrigin="anonymous"
+      src={src}
+      alt={alt}
+      onError={(e) => {
+        e.target.style.display = 'none'
+      }}
+      {...props}
+    />
+  )
+}
 
 const AvatarFallback = ({ className = "", fallbackText = "U", ...props }) => (
   <div

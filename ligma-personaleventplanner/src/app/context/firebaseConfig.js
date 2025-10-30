@@ -16,5 +16,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const googleAuthProvider = new GoogleAuthProvider();
+// Ensure we receive basic profile info including photoURL
+googleAuthProvider.addScope('profile');
+googleAuthProvider.addScope('email');
+googleAuthProvider.setCustomParameters({ prompt: 'select_account' });
 
-export { auth, googleAuthProvider };
+export { app, auth, googleAuthProvider };

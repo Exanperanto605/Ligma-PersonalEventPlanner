@@ -7,6 +7,8 @@ const Button = ({ children, variant = "default", size = "default", className = "
     default: "bg-[#4285f4] text-white hover:bg-[#4285f4] hover:opacity-90",
     ghost: "hover:bg-[#4285f4]/10 hover:text-[#4285f4]",
     outline: "border border-[#4285f4]/20 hover:bg-[#4285f4]/10 hover:text-[#4285f4]",
+    destructive: "bg-red-600 text-white hover:bg-red-600 hover:opacity-90",
+    secondary: "bg-white text-black hover:opacity-90",
   }
 
   const sizes = {
