@@ -70,9 +70,14 @@ export default function AuthProvider({ children }) {
             const ref = doc(db, "users", user.uid);
             const snap = await getDoc(ref);
 
-            if (snap.exists() && snap.data().is2FAEnabled) {
-                // Redirect the user to 2FA verification page.
-                router.push("/verify-2fa");
+            if (snap.exists()) {
+                if (snap.data().is2FAEnabled) {
+                    // Redirect the user to 2FA verification page.
+                    router.push("/verify-2fa");
+                }
+                else {
+                    router.push("/setup-2fa")
+                }
             }
         } catch (error) {
             console.error(`2FA checking error: ${error}`);
