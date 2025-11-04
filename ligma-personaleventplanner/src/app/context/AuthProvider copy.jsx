@@ -63,7 +63,6 @@ export default function AuthProvider({ children }) {
     };
 
     // 2FA Redirect
-
     async function verify2FA(user) {
         if (!user?.uid) return;
 
@@ -76,7 +75,7 @@ export default function AuthProvider({ children }) {
                 router.push("/verify-2fa");
             }
         } catch (error) {
-            console.error(`@FA checking error: ${error}`);
+            console.error(`2FA checking error: ${error}`);
         }
     }
 
