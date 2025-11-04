@@ -2,7 +2,8 @@
 
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut as firebaseSignOut, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from "react";
-import { auth, googleAuthProvider } from './firebaseConfig.js';
+import { auth, googleAuthProvider, db } from './firebaseConfig.js';
+import { doc, getDoc } from "firebase/firestore";
 import { UserAuthContext } from './auth-context';
 import { useRouter } from 'next/navigation';
 
@@ -30,6 +31,7 @@ export default function AuthProvider({ children }) {
             const u = auth.currentUser || result.user;
             const normalized = normalizeUser(u);
             setUser(normalized);
+            await verify2FA(normalized);
             return result;
         } catch (error) {
             console.error(`Sign-in error: ${error}`);
@@ -45,6 +47,7 @@ export default function AuthProvider({ children }) {
             const u = auth.currentUser || result.user;
             const normalized = normalizeUser(u);
             setUser(normalized);
+            await verify2FA(normalized);
             return result;
         } catch (error) {
             console.error(`Sign-in error: ${error}`);
@@ -58,6 +61,24 @@ export default function AuthProvider({ children }) {
         await firebaseSignOut(auth);
         setUser(null);
     };
+
+    // 2FA Redirect
+
+    async function verify2FA(user) {
+        if (!user?.uid) return;
+
+        try {
+            const ref = doc(db, "users", user.uid);
+            const snap = await getDoc(ref);
+
+            if (snap.exists() && snap.data().is2FAEnabled) {
+                // WIP
+                router.push("/verify-2fa");
+            }
+        } catch (error) {
+            console.error(`@FA checking error: ${error}`);
+        }
+    }
 
     // Normalize User
     function normalizeUser(u) {
