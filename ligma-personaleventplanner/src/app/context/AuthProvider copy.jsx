@@ -71,7 +71,7 @@ export default function AuthProvider({ children }) {
             const snap = await getDoc(ref);
 
             if (snap.exists() && snap.data().is2FAEnabled) {
-                // WIP
+                // Redirect the user to 2FA verification page.
                 router.push("/verify-2fa");
             }
         } catch (error) {
