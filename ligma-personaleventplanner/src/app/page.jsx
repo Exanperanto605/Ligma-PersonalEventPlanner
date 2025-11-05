@@ -28,7 +28,7 @@ function AuthContent() {
             await signInWithEmailPW(email, password);
             router.push('/calendar/view');
         } catch (err) {
-            if (err == "Placeholder - 2FA Verification needed message thing") {
+            if (err == "Placeholder - 2FA Verification needed message thing") { // WIP
                 router.push('/auth/verify-2fa');
             }
             else {
@@ -42,7 +42,12 @@ function AuthContent() {
             await signInWithGoogle();
             router.push('/calendar/view');
         } catch (err) {
-            console.error('Google sign-in failed', err);
+            if (err == "Placeholder - 2FA Verification needed message thing") { // WIP
+                router.push('/auth/verify-2fa');
+            }
+            else {
+                console.error('Google sign-in failed', err);
+            }
         }
     };
 
