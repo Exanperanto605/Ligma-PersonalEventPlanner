@@ -13,7 +13,7 @@ export default function AuthProvider({ children }) {
 
     const signUpWithEmailPW = async (email, password) => {
         try {
-            const result = await createUserWithEmailAndPassword(auth, email, password);
+            const result = await createUserWithEmailAndPassword(auth, email, username, dateOfBirth, password);
             const u = auth.currentUser || result.user;
             const normalized = normalizeUser(u);
             setUser(normalized);
