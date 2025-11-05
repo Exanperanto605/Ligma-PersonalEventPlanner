@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { UserAuthContext } from "../../context/auth-context";
+import { db } from "../../context/firebaseConfig";
 import { useRouter } from "next/navigation";
 
 function CreateNewAccount() {
