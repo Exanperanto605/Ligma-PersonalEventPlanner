@@ -1,5 +1,6 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApp, getApps } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyATu0GiahKhqmpyTaxUo1uSqsO0DppghGg",
@@ -11,7 +12,7 @@ const firebaseConfig = {
     measurementId: "G-82BB3BME5H"
 };
 
-const app = initializeApp(firebaseConfig);
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 const auth = getAuth(app);
 
@@ -22,3 +23,4 @@ googleAuthProvider.addScope('email');
 googleAuthProvider.setCustomParameters({ prompt: 'select_account' });
 
 export { app, auth, googleAuthProvider };
+export const db = getFirestore(app);

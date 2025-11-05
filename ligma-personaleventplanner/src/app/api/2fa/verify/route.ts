@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import speakeasy from "speakeasy";
 // import { db } from '@/app/context/firebaseConfig.js' <-- Real
-import { db } from '@/app/context/firebaseConfig copy.js'
+import { db } from '@/app/context/firebaseConfig.js'
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { error } from "console";
 

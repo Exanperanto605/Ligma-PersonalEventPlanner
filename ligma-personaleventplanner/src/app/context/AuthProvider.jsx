@@ -1,8 +1,9 @@
 "use client";
 
-import { signInWithPopup, signOut as firebaseSignOut, onAuthStateChanged } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut as firebaseSignOut, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from "react";
-import { auth, googleAuthProvider } from './firebaseConfig.js';
+import { auth, googleAuthProvider, db } from './firebaseConfig.js';
+import { doc, getDoc } from "firebase/firestore";
 import { UserAuthContext } from './auth-context';
 import { useRouter } from 'next/navigation';
 
@@ -10,19 +11,43 @@ export default function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const router = useRouter();
 
+    const signUpWithEmailPW = async (email, password) => {
+        try {
+            const result = await createUserWithEmailAndPassword(auth, email, password);
+            const u = auth.currentUser || result.user;
+            const normalized = normalizeUser(u);
+            setUser(normalized);
+            return result;
+        } catch (error) {
+            console.error(`Sign-up error: ${error}`);
+            throw error;
+        }
+    };
+
+    const signInWithEmailPW = async (email, password) => {
+        try {
+            const result = await signInWithEmailAndPassword(auth, email, password);
+            try { await result.user?.reload(); } catch (_) { /* ignore */ }
+            const u = auth.currentUser || result.user;
+            const normalized = normalizeUser(u);
+            setUser(normalized);
+            await verify2FA(normalized);
+            return result;
+        } catch (error) {
+            console.error(`Sign-in error: ${error}`);
+            try { router.push('/401'); } catch(e) { /* ignore */ } // Placeholder
+            throw error;
+        }
+    };
+    
     const signInWithGoogle = async () => {
         try {
             const result = await signInWithPopup(auth, googleAuthProvider);
             try { await result.user?.reload(); } catch (_) { /* ignore */ }
             const u = auth.currentUser || result.user;
-            const normalized = {
-                uid: u?.uid,
-                email: u?.email,
-                displayName: u?.displayName || u?.providerData?.[0]?.displayName || u?.email || "",
-                photoURL: u?.photoURL || u?.providerData?.[0]?.photoURL || "",
-                providerData: u?.providerData || [],
-            };
+            const normalized = normalizeUser(u);
             setUser(normalized);
+            await verify2FA(normalized);
             return result;
         } catch (error) {
             console.error(`Sign-in error: ${error}`);
@@ -36,6 +61,40 @@ export default function AuthProvider({ children }) {
         await firebaseSignOut(auth);
         setUser(null);
     };
+
+    // 2FA Redirect
+    async function verify2FA(user) {
+        if (!user?.uid) return;
+
+        try {
+            const ref = doc(db, "users", user.uid);
+            const snap = await getDoc(ref);
+
+            if (snap.exists()) {
+                if (snap.data().is2FAEnabled) {
+                    // Redirect the user to 2FA verification page.
+                    router.push("/verify-2fa");
+                }
+                else {
+                    router.push("/setup-2fa")
+                }
+            }
+        } catch (error) {
+            console.error(`2FA checking error: ${error}`);
+        }
+    }
+
+    // Normalize User
+    function normalizeUser(u) {
+        if (!u) return null;
+        return {
+            uid: u?.uid,
+            email: u?.email,
+            displayName: u?.displayName || u?.providerData?.[0]?.displayName || u?.email || "",
+            photoURL: u?.photoURL || u?.providerData?.[0]?.photoURL || "",
+            providerData: u?.providerData || [],
+        };
+    }
 
     useEffect(() => {
         // E2E test bypass: when NEXT_PUBLIC_E2E_TEST=1 and localStorage flag set
@@ -64,6 +123,6 @@ export default function AuthProvider({ children }) {
     }, []);
 
     return (
-        <UserAuthContext.Provider value={{ user, signInWithGoogle, signOut }}>{children}</UserAuthContext.Provider>
+        <UserAuthContext.Provider value={{ user, signUpWithEmailPW, signInWithEmailPW, signInWithGoogle, signOut }}>{children}</UserAuthContext.Provider>
     );
 }

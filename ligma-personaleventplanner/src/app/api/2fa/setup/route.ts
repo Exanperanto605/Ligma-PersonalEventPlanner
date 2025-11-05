@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import speakeasy from "speakeasy";
 import QRCode from "qrcode";
 // import { db } from '@/app/context/firebaseConfig.js' <-- Real
-import { db } from '@/app/context/firebaseConfig copy.js'
+import { db } from '@/app/context/firebaseConfig.js'
 import { doc, setDoc } from "firebase/firestore";
 
 export async function POST(req: Request) {
