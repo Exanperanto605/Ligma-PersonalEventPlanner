@@ -73,6 +73,7 @@ export default function CalendarViewPage() {
     return 256
   })
   const [isResizing, setIsResizing] = useState(false)
+  const [isSmallScreen, setIsSmallScreen] = useState(false)
   const [newEventName, setNewEventName] = useState("")
   const [newEventType, setNewEventType] = useState("")
   const [startDate, setStartDate] = useState("") // ISO YYYY-MM-DD
@@ -333,6 +334,20 @@ export default function CalendarViewPage() {
     }
   }, [isResizing, sidebarWidth])
 
+  // Track small screen to switch layout to stacked column
+  useEffect(() => {
+    const check = () => {
+      try {
+        setIsSmallScreen(typeof window !== 'undefined' && window.innerWidth < 768)
+      } catch (_) {
+        setIsSmallScreen(false)
+      }
+    }
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
   // Auto hide toast
   useEffect(() => {
     if (!toast) return
@@ -547,7 +562,7 @@ export default function CalendarViewPage() {
 
   return (
     <>
-    <div className="flex h-screen bg-[#1a1a1a] text-white overflow-hidden">
+    <div className="flex flex-col md:flex-row h-screen bg-[#1a1a1a] text-white overflow-hidden">
       {toast && (
         <div
           className={`fixed top-4 left-1/2 -translate-x-1/2 z-[100] px-4 py-2 rounded-md border ${
@@ -564,7 +579,7 @@ export default function CalendarViewPage() {
         </div>
       )}
       {/* Left Sidebar */}
-      <div className="relative bg-[#0f0f0f] border-r border-gray-800 flex flex-col overflow-hidden" style={{ width: sidebarWidth }}>
+  <div className="relative bg-[#0f0f0f] border-r border-gray-800 flex flex-col overflow-hidden md:flex-shrink-0" style={isSmallScreen ? { width: '100%' } : { width: sidebarWidth }}>
         {/* Mini Calendar */}
         <div className="p-4 border-b border-gray-800">
           <h2 className="text-lg font-semibold mb-4">{monthNames[currentMonth]}</h2>
@@ -706,7 +721,7 @@ export default function CalendarViewPage() {
       {/* Main Calendar Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="h-16 border-b border-gray-800 flex items-center justify-between px-6">
+        <div className="h-16 border-b border-gray-800 flex items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-4">
             <Button size="icon" variant="ghost">
               <Menu className="h-5 w-5" />
@@ -765,7 +780,7 @@ export default function CalendarViewPage() {
           </div>
         </div>
 
-        {/* Calendar Grid */}
+  {/* Calendar Grid */}
         <div className="flex-1 overflow-hidden">
           <div className="h-full flex flex-col">
             <div className="grid grid-cols-7 border-b border-gray-800 bg-[#0f0f0f] z-10">
@@ -863,11 +878,13 @@ export default function CalendarViewPage() {
             </div>
           </div>
         </div>
-        {/* Resize handle */}
-        <div
-          className="absolute right-0 top-0 h-full w-1.5 cursor-col-resize hover:bg-[#4285f4]/40"
-          onMouseDown={() => setIsResizing(true)}
-        />
+        {/* Resize handle (hidden on small screens) */}
+        {!isSmallScreen && (
+          <div
+            className="absolute right-0 top-0 h-full w-1.5 cursor-col-resize hover:bg-[#4285f4]/40"
+            onMouseDown={() => setIsResizing(true)}
+          />
+        )}
       </div>
     </div>
       {/* Add Event Modal */}
