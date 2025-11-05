@@ -11,7 +11,7 @@ export default function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const router = useRouter();
 
-    const signUpWithEmail_PW = async (email, password) => {
+    const signUpWithEmailPW = async (email, password) => {
         try {
             const result = await createUserWithEmailAndPassword(auth, email, password);
             const u = auth.currentUser || result.user;
@@ -24,7 +24,7 @@ export default function AuthProvider({ children }) {
         }
     };
 
-    const signInWithEmail_PW = async (email, password) => {
+    const signInWithEmailPW = async (email, password) => {
         try {
             const result = await signInWithEmailAndPassword(auth, email, password);
             try { await result.user?.reload(); } catch (_) { /* ignore */ }
@@ -123,6 +123,6 @@ export default function AuthProvider({ children }) {
     }, []);
 
     return (
-        <UserAuthContext.Provider value={{ user, signInWithGoogle, signOut }}>{children}</UserAuthContext.Provider>
+        <UserAuthContext.Provider value={{ user, signUpWithEmailPW, signInWithEmailPW, signInWithGoogle, signOut }}>{children}</UserAuthContext.Provider>
     );
 }
