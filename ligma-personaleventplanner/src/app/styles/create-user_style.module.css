@@ -1,6 +1,7 @@
 :root {
     --bg: #333333;
     --card: #1c1c1c;
+    --titlecard: #323232;
     --accent: #6366f1;
     --emailButton: #2c2c2c;
     --googleButton: #4285f4;
@@ -21,7 +22,7 @@
 
 .card {
     background: var(--card);
-    padding: 40px 36px;
+    /*padding: 40px 36px;*/
     border-radius: var(--radius);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     width: 360px;
@@ -32,6 +33,13 @@
     font-size: 45px;
     font-weight: 600;
     margin: 0;
+}
+
+.titlecard {
+    background-color: var(--titlecard);
+    width: 100%;
+    height: fit-content;
+    padding: 40px 36px;
 }
 
 .subtitle {

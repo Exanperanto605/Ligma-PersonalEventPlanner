@@ -37,7 +37,7 @@ function CreateNewAccount() {
         setError("");
 
         if (!isValidBirthdateFormat(value)) {
-            setError("Please enter a valid date in DD/MM/YYYY format.");
+            setError("Please enter a valid date in YYYY/MM/DD format.");
             return;
         }
 
@@ -48,13 +48,13 @@ function CreateNewAccount() {
 
     // Date Format Thing
     const isValidBirthdateFormat = (dateStr) => {
-        // Must be in 'DD/MM/YYYY' format
-        const match = dateStr.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+        // Must be in 'YYYY/MM/DD' format
+        const match = dateStr.match(/^(\d{4})\/(\d{2})\/(\d{2})$/);
         if (!match) return false;
 
-        const day = parseInt(match[1]);
+        const year = parseInt(match[1]);
         const month = parseInt(match[2]);
-        const year = parseInt(match[3]);
+        const day = parseInt(match[3]);
 
         const date = new Date(year, month - 1, day);
         return (
@@ -67,7 +67,9 @@ function CreateNewAccount() {
     return (
         <div>
             <div className={styles.card}>
-                <h1 className={styles.nameh1}>Create your account</h1>
+                <div className={styles.titlecard}>
+                    <h1 className={styles.nameh1}>Create your account</h1>
+                </div>
                 <form onSubmit={handleSignUpWithEmailPW}>
                     <div className={styles.inputgroup}>
                     <label htmlFor="email">Email</label>
@@ -98,7 +100,7 @@ function CreateNewAccount() {
                     <input
                         id="birthdate"
                         type="birthdate"
-                        placeholder="01/01/1990"
+                        placeholder="YYYY/MM/DD"
                         value={dateOfBirth}
                         onChange={(e) => handleBirthdateChange(e)}
                         required
