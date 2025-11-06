@@ -25,21 +25,22 @@
     /*padding: 40px 36px;*/
     border-radius: var(--radius);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    width: 360px;
+    width: 480px;
     text-align: center;
 }
 
 .nameh1 {
-    font-size: 45px;
+    font-size: 35px;
     font-weight: 600;
     margin: 0;
 }
 
 .titlecard {
     background-color: var(--titlecard);
+    border-radius: var(--radius) var(--radius) 0 0;
     width: 100%;
     height: fit-content;
-    padding: 40px 36px;
+    padding: 40px 15px;
 }
 
 .subtitle {
@@ -50,7 +51,10 @@
 
 .inputgroup {
     text-align: left;
-    margin-bottom: 16px;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 .inputgroup label {
@@ -78,7 +82,7 @@ input:focus {
 }
 
 .links {
-    display: flex;
+    display: block;
     justify-content: space-between;
     margin-top: 8px;
     margin-bottom: 24px;
@@ -94,19 +98,20 @@ a:hover {
     text-decoration: underline;
 }
 
-.submit2FACode {
-    width: 100%;
+.submit {
+    width: 200px;
     background: var(--emailButton);
     border: none;
     border-radius: var(--radius);
     color: white;
     font-size: 15px;
     font-weight: 600;
+    margin-top: 10px;
     padding: 12px 0;
     cursor: pointer;
     transition: background 0.2s ease;
 }
 
-.submit2FACode:hover {
+.submit:hover {
     background: #3e3e3e;
 }

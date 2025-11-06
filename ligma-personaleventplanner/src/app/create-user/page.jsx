@@ -2,8 +2,9 @@
 
 import { useContext, useState } from "react";
 import { UserAuthContext } from "../context/auth-context";
+import AuthProvider from "../context/AuthProvider";
 import { useRouter } from "next/navigation";
-import styles from "./styles/create-user_style.module.css";
+import styles from "../styles/create-user_style.module.css";
 
 function CreateNewAccount() {
     const { signUpWithEmailPW } = useContext(UserAuthContext);
@@ -67,7 +68,7 @@ function CreateNewAccount() {
     }
     
     return (
-        <div>
+        <div className={styles.container}>
             <div className={styles.card}>
                 <div className={styles.titlecard}>
                     <h1 className={styles.nameh1}>Create your account</h1>
@@ -126,7 +127,7 @@ function CreateNewAccount() {
                     <input
                         id="confirm-password"
                         type="confirm-password"
-                        placeholder="Password"
+                        placeholder="Confirm Password"
                         value={confirmPassword && (
                                 <p
                                     className={`text-sm ${
@@ -142,7 +143,7 @@ function CreateNewAccount() {
                     </div>
 
                     <p></p>
-                    <button className={styles.submitEmail} type="submit">
+                    <button className={styles.submit} type="submit">
                     Submit
                     </button>
 
