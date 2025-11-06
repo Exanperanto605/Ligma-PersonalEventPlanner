@@ -11,10 +11,18 @@ export default function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const router = useRouter();
 
-    const signUpWithEmailPW = async (email, password) => {
+    const signUpWithEmailPW = async (email, username, dateOfBirth, password) => {
         try {
             const result = await createUserWithEmailAndPassword(auth, email, password);
             const u = auth.currentUser || result.user;
+
+            await setDoc(doc(db, "users", u.uid), {
+                email,
+                username,
+                dateOfBirth,
+                createAt: new Date()
+            });
+
             const normalized = normalizeUser(u);
             setUser(normalized);
             return result;
