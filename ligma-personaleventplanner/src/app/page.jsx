@@ -73,9 +73,8 @@ function AuthContent() {
                             </div>
 
                             <div className={styles.links}>
-                                <a href="/create-user">Create Account</a>
                                 <a href="/forgot-password">Forgot password?</a>
-                                <a href="/register">Register</a>
+                                <a href="/create-user">Register</a>
                             </div>
 
                             <button className={styles.submitEmail} type="submit">Sign In</button>
