@@ -35,7 +35,8 @@ function CreateNewAccount() {
         }
     }
 
-    const handleBirthdateChange = (value) => {
+    const handleBirthdateChange = (e) => {
+        const value = e.target.value;
         setError("");
 
         if (!isValidBirthdateFormat(value)) {
