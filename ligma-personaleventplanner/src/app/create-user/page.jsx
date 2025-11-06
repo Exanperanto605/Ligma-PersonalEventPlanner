@@ -1,5 +1,7 @@
+"use client";
+
 import { useContext, useState } from "react";
-import { UserAuthContext } from "../../context/auth-context";
+import { UserAuthContext } from "../context/auth-context";
 import { useRouter } from "next/navigation";
 import styles from "./styles/create-user_style.module.css";
 
@@ -139,6 +141,7 @@ function CreateNewAccount() {
                     />
                     </div>
 
+                    <p></p>
                     <button className={styles.submitEmail} type="submit">
                     Submit
                     </button>
@@ -150,4 +153,10 @@ function CreateNewAccount() {
             </div>
         </div>
     );
+}
+
+export default function CreateUserPage() {
+    return (
+        <AuthProvider><CreateNewAccount /></AuthProvider>
+    )
 }
