@@ -37,33 +37,31 @@ function CreateNewAccount() {
 
     const handleBirthdateChange = (e) => {
         const value = e.target.value;
-        setError("");
+        setDateOfBirth(value);
 
-        if (!isValidBirthdateFormat(value)) {
-            setError("Please enter a valid date in YYYY/MM/DD format.");
-            return;
+        if (isValidBirthdateFormat(value)) {
+            setError("");
         }
-
-        if (/^[0-9/]*$/.test(value)) {
-            setDateOfBirth(value);
+        else {
+            setError("Please enter a valid date in YYYY-MM-DD format.");
         }
     }
 
     // Date Format Thing
     const isValidBirthdateFormat = (dateStr) => {
-        // Must be in 'YYYY/MM/DD' format
-        const match = dateStr.match(/^(\d{4})\/(\d{2})\/(\d{2})$/);
+        // Must be in 'YYYY-MM-DD' format
+        if (typeof dateStr !== "string") return false;
+
+        const match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
         if (!match) return false;
 
-        const year = parseInt(match[1]);
-        const month = parseInt(match[2]);
-        const day = parseInt(match[3]);
+        const [_, year, month, day] = match;
 
-        const date = new Date(year, month - 1, day);
+        const date = new Date(+year, +month - 1, +day);
         return (
-            date.getFullYear() === year &&
-            date.getMonth() === month - 1 &&
-            date.getDate() === day
+            date.getFullYear() === +year &&
+            date.getMonth() === +month - 1 &&
+            date.getDate() === +day
         );
     }
     
@@ -102,14 +100,15 @@ function CreateNewAccount() {
                     <label htmlFor="username">Birth Date</label>
                     <input
                         id="birthdate"
-                        type="birthdate"
-                        placeholder="YYYY/MM/DD"
+                        type="text"
+                        placeholder="YYYY-MM-DD"
                         value={dateOfBirth}
                         onChange={handleBirthdateChange}
                         maxLength={10}
                         required
                     />
                     </div>
+                    <p className={"text-xs text-red-500"}>{error ? `${error}` : ""}</p>
 
                     <div className={styles.inputgroup}>
                     <label htmlFor="password">Password</label>
@@ -127,23 +126,17 @@ function CreateNewAccount() {
                     <label htmlFor="confirm-password">Confirm Password</label>
                     <input
                         id="confirm-password"
-                        type="confirm-password"
+                        type="password"
                         placeholder="Confirm Password"
-                        value={confirmPassword && (
-                                <p
-                                    className={`text-sm ${
-                                    password === confirmPassword ? "text-green-600" : "text-red-600"
-                                    }`}
-                                >
-                                    {password === confirmPassword ? "Passwords match. All good! :)" : "Both passwords must match. :("}
-                                </p>
-                                )}
+                        value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                     />
                     </div>
 
-                    <p></p>
+                    <p className={`text-xs ${password === confirmPassword ? "text-lime-600" : "text-red-600"}`}>
+                        {(!password || !confirmPassword) ? "" : ((password === confirmPassword) ? "Passwords match. All good! :)" : "Both passwords must match. :(")}
+                    </p>
                     <button className={styles.submit} type="submit">
                     Submit
                     </button>

@@ -16,10 +16,12 @@ export default function AuthProvider({ children }) {
             const result = await createUserWithEmailAndPassword(auth, email, password);
             const u = auth.currentUser || result.user;
 
+            const formattedDate = new Date(dateOfBirth).toISOString().split("T")[0];
+
             await setDoc(doc(db, "users", u.uid), {
                 email,
                 username,
-                dateOfBirth,
+                dateOfBirth: formattedDate,
                 createAt: new Date()
             });
 
