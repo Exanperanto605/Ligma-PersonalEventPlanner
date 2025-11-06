@@ -28,7 +28,7 @@ function CreateNewAccount() {
         }
 
         try {
-            const userCred = signUpWithEmailPW(email, username, dateOfBirth, password);
+            await signUpWithEmailPW(email, username, dateOfBirth, password);
             router.push('/calendar/view')
         } catch (err) {
             console.error('Sign-up failed', err);
