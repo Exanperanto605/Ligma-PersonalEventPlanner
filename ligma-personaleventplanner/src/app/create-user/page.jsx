@@ -137,7 +137,7 @@ function CreateNewAccount() {
                     <p className={`text-xs ${password === confirmPassword ? "text-lime-600" : "text-red-600"}`}>
                         {(!password || !confirmPassword) ? "" : ((password === confirmPassword) ? "Passwords match. All good! :)" : "Both passwords must match. :(")}
                     </p>
-                    <button className={styles.submit} type="submit">
+                    <button className={styles.submit} type="submit" onClick={handleSignUpWithEmailPW}>
                     Submit
                     </button>
 

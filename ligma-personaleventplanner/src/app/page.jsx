@@ -77,7 +77,7 @@ function AuthContent() {
                                 <a href="/create-user">Register</a>
                             </div>
 
-                            <button className={styles.submitEmail} type="submit">Sign In</button>
+                            <button className={styles.submitEmail} type="submit" onClick={handleEmailSignIn}>Sign In</button>
                         </form>
                         <button onClick={handleGoogleSignIn} className={styles.signInGoogle}>Sign In With Google</button>
                     </div>
