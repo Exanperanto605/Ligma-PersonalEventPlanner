@@ -81,7 +81,7 @@ export default function AuthProvider({ children }) {
             if (snap.exists()) {
                 if (snap.data().is2FAEnabled) {
                     // Redirect the user to 2FA verification page.
-                    router.push("/auth/verify-2fa");
+                    router.push("/verify-2fa");
                 }
             }
         } catch (error) {

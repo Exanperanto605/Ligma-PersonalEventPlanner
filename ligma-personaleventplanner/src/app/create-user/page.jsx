@@ -35,8 +35,7 @@ function CreateNewAccount() {
         }
     }
 
-    const handleBirthdateChange = (e) => {
-        const value = e.target.value;
+    const handleBirthdateChange = (value) => {
         setError("");
 
         if (!isValidBirthdateFormat(value)) {
@@ -105,7 +104,8 @@ function CreateNewAccount() {
                         type="birthdate"
                         placeholder="YYYY/MM/DD"
                         value={dateOfBirth}
-                        onChange={(e) => handleBirthdateChange(e)}
+                        onChange={handleBirthdateChange}
+                        maxLength={10}
                         required
                     />
                     </div>
