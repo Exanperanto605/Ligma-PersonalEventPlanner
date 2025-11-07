@@ -12,6 +12,8 @@ function AuthContent() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const [emailPwError, setEmailPwError] = useState("");
     
     // If user is authenticated, navigate to dashboard after render
     useEffect(() => {
@@ -24,10 +26,15 @@ function AuthContent() {
 
     const handleEmailSignIn = async (e) => {
         e.preventDefault();
+        setEmailPwError("");
+
         try {
             await signInWithEmailPW(email, password);
             router.push('/calendar/view');
         } catch (err) {
+            if (err.code === "auth/invalid-credential") {
+                setEmailPwError("Invalid email or password. Please try again.")
+            }
             console.error('Email + PW sign-in failed', err);
         }
     }
@@ -55,6 +62,7 @@ function AuthContent() {
                     <div className={styles.card}>
                         <h1 className={styles.nameh1}>Ligma</h1>
                         <div className={styles.subtitle}>Your Personal Event Planner</div>
+                        <p className={"text-xs text-red-500"}>{emailPwError ? `${emailPwError}` : ""}</p>
                         <form onSubmit={handleEmailSignIn}>
                             <div className={styles.inputgroup}>
                                 <label htmlFor="email">Email</label>

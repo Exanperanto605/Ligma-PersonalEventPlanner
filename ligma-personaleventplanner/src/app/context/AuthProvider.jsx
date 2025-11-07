@@ -45,7 +45,11 @@ export default function AuthProvider({ children }) {
             return result;
         } catch (error) {
             console.error(`Sign-in error: ${error}`);
-            try { router.push('/401'); } catch(e) { /* ignore */ }
+            if (error.code === "auth/invalid-credential") {
+                /* ignore */
+            }
+            else {try { router.push('/401'); } catch(e) { /* ignore */ }}
+            
             throw error;
         }
     };
