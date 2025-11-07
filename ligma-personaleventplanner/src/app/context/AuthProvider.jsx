@@ -3,7 +3,7 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut as firebaseSignOut, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from "react";
 import { auth, googleAuthProvider, db } from './firebaseConfig.js';
-import { doc, getDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { UserAuthContext } from './auth-context';
 import { useRouter } from 'next/navigation';
 
@@ -45,7 +45,7 @@ export default function AuthProvider({ children }) {
             return result;
         } catch (error) {
             console.error(`Sign-in error: ${error}`);
-            try { router.push('/401'); } catch(e) { /* ignore */ } // Placeholder
+            try { router.push('/401'); } catch(e) { /* ignore */ }
             throw error;
         }
     };

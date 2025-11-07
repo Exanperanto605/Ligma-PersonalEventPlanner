@@ -16,14 +16,17 @@ function CreateNewAccount() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    const [error, setError] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [dateError, setdateError] = useState("");
+    const [pwError, setPwError] = useState("");
 
     const handleSignUpWithEmailPW = async (e) => {
         e.preventDefault();
-        setError("");
+        setEmailError("");
+        setPwError("");
 
         if (password !== confirmPassword) {
-            setError("Passwords do not match. Please try again.");
+            setPwError("Both passwords must match. :(");
             return;
         }
 
@@ -31,7 +34,15 @@ function CreateNewAccount() {
             await signUpWithEmailPW(email, username, dateOfBirth, password);
             router.push('/calendar/view')
         } catch (err) {
-            console.error('Sign-up failed', err);
+            if (err.code === "auth/email-already-in-use") {
+                setEmailError("This email is already taken by an existing account.")
+            }
+            else if (err.code === "auth/invalid-email") {
+                setEmailError("This email is invalid. Please type in the valid email.")
+            }
+            else {
+                console.error('Sign-up failed', err);
+            }
         }
     }
 
@@ -40,10 +51,10 @@ function CreateNewAccount() {
         setDateOfBirth(value);
 
         if (isValidBirthdateFormat(value)) {
-            setError("");
+            setdateError("");
         }
         else {
-            setError("Please enter a valid date in YYYY-MM-DD format.");
+            setdateError("Please enter a valid date in YYYY-MM-DD format.");
         }
     }
 
@@ -64,6 +75,8 @@ function CreateNewAccount() {
             date.getDate() === +day
         );
     }
+
+    // if (user) return <div>Redirecting to dashboard...</div>;
     
     return (
         <div className={styles.container}>
@@ -83,6 +96,7 @@ function CreateNewAccount() {
                         required
                     />
                     </div>
+                    <p className={"text-xs text-red-500"}>{emailError ? `${emailError}` : ""}</p>
 
                     <div className={styles.inputgroup}>
                     <label htmlFor="username">Username</label>
@@ -108,7 +122,7 @@ function CreateNewAccount() {
                         required
                     />
                     </div>
-                    <p className={"text-xs text-red-500"}>{error ? `${error}` : ""}</p>
+                    <p className={"text-xs text-red-500"}>{dateError ? `${dateError}` : ""}</p>
 
                     <div className={styles.inputgroup}>
                     <label htmlFor="password">Password</label>
