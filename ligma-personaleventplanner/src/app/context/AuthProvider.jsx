@@ -18,7 +18,7 @@ export default function AuthProvider({ children }) {
 
             const formattedDate = new Date(dateOfBirth).toISOString().split("T")[0];
 
-            await setDoc(doc(db, "users", u.uid), {
+            await setDoc(doc(db, "userInfo", u.uid), {
                 email,
                 username,
                 dateOfBirth: formattedDate,
