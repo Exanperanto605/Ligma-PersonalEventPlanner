@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "./context/AuthProvider";
 import NavBar from "./components/NavBar";
+import ManualSyncButton from "../components/ui/ManualSyncButton"; //FLUKEGAS ADDED
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +32,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
-          <NavBar />
+          <NavBar /> 
+          {/* ปุ่ม Manual Sync ชิดขวา */} 
+          <div style={{ padding: "12px 16px", display: "flex", justifyContent: "flex-end" }}> 
+           <ManualSyncButton />
+          </div>
           {children}
         </AuthProvider>
       </body>
