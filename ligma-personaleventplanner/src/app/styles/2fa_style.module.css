@@ -2,8 +2,7 @@
     --bg: #333333;
     --card: #1c1c1c;
     --accent: #6366f1;
-    --emailButton: #2c2c2c;
-    --googleButton: #4285f4;
+    --submitButton: #2c2c2c;
     --muted: #94a3b8;
     --radius: 12px;
     font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -87,13 +86,14 @@ a:hover {
 }
 
 .submit2FACode {
-    width: 100%;
-    background: var(--emailButton);
+    width: 200px;
+    background: var(--submitButton);
     border: none;
     border-radius: var(--radius);
     color: white;
     font-size: 15px;
     font-weight: 600;
+    margin-top: 10px;
     padding: 12px 0;
     cursor: pointer;
     transition: background 0.2s ease;

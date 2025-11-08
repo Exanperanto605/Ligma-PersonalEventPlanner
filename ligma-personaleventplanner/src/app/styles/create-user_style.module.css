@@ -3,8 +3,7 @@
     --card: #1c1c1c;
     --titlecard: #323232;
     --accent: #6366f1;
-    --emailButton: #2c2c2c;
-    --googleButton: #4285f4;
+    --submitButton: #2c2c2c;
     --muted: #94a3b8;
     --radius: 12px;
     font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -100,7 +99,7 @@ a:hover {
 
 .submit {
     width: 200px;
-    background: var(--emailButton);
+    background: var(--submitButton);
     border: none;
     border-radius: var(--radius);
     color: white;
