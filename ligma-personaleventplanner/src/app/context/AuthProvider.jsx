@@ -3,7 +3,7 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut as firebaseSignOut, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from "react";
 import { auth, googleAuthProvider, db } from './firebaseConfig.js';
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { UserAuthContext } from './auth-context';
 import { useRouter } from 'next/navigation';
 
@@ -22,7 +22,9 @@ export default function AuthProvider({ children }) {
                 email,
                 username,
                 dateOfBirth: formattedDate,
-                createAt: new Date()
+                createAt: new Date(),
+                provider: "email",
+                is2FAEnabled: false
             });
 
             const normalized = normalizeUser(u);
@@ -59,6 +61,21 @@ export default function AuthProvider({ children }) {
             const result = await signInWithPopup(auth, googleAuthProvider);
             try { await result.user?.reload(); } catch (_) { /* ignore */ }
             const u = auth.currentUser || result.user;
+
+            const userSnap = await getDoc(doc(db, "userInfo", u.uid));
+
+            if (!userSnap.exists()) {
+                console.log("New Google User: ", uid);
+                await setDoc(doc(db, "userInfo", u.uid), {
+                    email: u.email,
+                    username: u.displayName,
+                    dateOfBirth: null,
+                    createAt: new Date(),
+                    provider: "Google",
+                    is2FAEnabled: false
+                });
+            }
+
             const normalized = normalizeUser(u);
             setUser(normalized);
             await verify2FA(normalized);
