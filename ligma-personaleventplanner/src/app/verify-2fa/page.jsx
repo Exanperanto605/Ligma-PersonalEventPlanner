@@ -44,16 +44,12 @@ export default function Verify2FA() {
                                 <div className={styles.inputgroup}>
                                     <input id="twoFAcode" placeholder="Enter 6-digit code..." 
                                     value={code}
+                                    maxLength={6}
                                     onChange={(e) => setCode(e.target.value)}
                                     required/>
                                 </div>
     
-                                <div className={styles.links}>
-                                    <a href="/forgot-password">Forgot password?</a>
-                                    <a href="/register">Register</a>
-                                </div>
-    
-                                <button className={styles.submit2FACode} type="submit">Sign In</button>
+                                <button className={styles.submit2FACode} type="submit" onClick={verifyCode}>Submit</button>
                             </form>
                         </div>
                     </div>

@@ -22,7 +22,7 @@ export default function Setup2FA() {
 
     async function verify() {
         const user = auth.currentUser;
-        const res = await fetch("../../api/2fa/verify", {
+        const res = await fetch("../../api/2fa/setup", {
             method: "POST",
             headers: { "Content-Type" : "application/json" },
             body: JSON.stringify({ uid: user?.uid, email: user?.email })
