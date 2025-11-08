@@ -58,13 +58,16 @@ export default function Setup2FA() {
     return (
         <div className={styles.container}>
         <h2 className={styles.nameh1}>Set up Two-Factor Authentication</h2>
+        <p className={styles.subtitle}>Scan the QR code below and enter the 6-digit code from your Authenticator</p>
         {qr && <img src={qr} alt="2FA QR Code" className={styles.qrSize} />}
         <input
+            id="twoFAcode"
             className={styles.inputgroup}
-            placeholder="Enter code from Authenticator"
+            placeholder="XXXXXX"
+            maxLength={6}
             value={code}
             onChange={(e) => setCode(e.target.value)}
-        />
+            required/>
         <button className={styles.submit2FACode} onClick={verify}>
             Verify
         </button>

@@ -42,7 +42,9 @@ export default function Verify2FA() {
                             {error && <p className="text-red-500">{error}</p>}
                             <form onSubmit={verifyCode}>
                                 <div className={styles.inputgroup}>
-                                    <input id="twoFAcode" placeholder="Enter 6-digit code..." 
+                                    <input 
+                                    id="twoFAcode" 
+                                    placeholder="XXXXXX" 
                                     value={code}
                                     maxLength={6}
                                     onChange={(e) => setCode(e.target.value)}
