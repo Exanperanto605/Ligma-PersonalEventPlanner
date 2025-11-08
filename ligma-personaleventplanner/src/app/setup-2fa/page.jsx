@@ -4,11 +4,15 @@ import { useEffect, useState } from "react";
 import { auth } from "../context/firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../context/firebaseConfig";
+import { useRouter } from "next/navigation"; 
+import styles from "./styles/2fa_style.module.css"
 
 export default function Setup2FA() {
     const [qr, setQr] = useState("");
     const [code, setCode] = useState("");
-    const [verified, setVerified] = useState(false);
+    const [success, setSuccess] = useState(false);
+
+    const router = useRouter();
 
     async function generate() {
         const user = auth.currentUser;
@@ -31,7 +35,7 @@ export default function Setup2FA() {
         });
 
         const data = await res.json();
-        setVerified(data.success);
+        setSuccess(data.success);
 
         const userRef = doc(db, "userInfo", user.uid);
         const userSnap = await getDoc(userRef);
@@ -41,23 +45,27 @@ export default function Setup2FA() {
                 is2FAEnabled: true
             });
         }
+
+        if (success) {
+            router.push("/calendar/view")
+        }
     }
 
     useEffect(() => {
         setup2FA();
     }, []);
 
-    return (    // Placeholder
-        <div className="flex flex-col items-center gap-4 p-8">
-        <h2 className="text-lg font-semibold">Set up Two-Factor Authentication</h2>
-        {qr && <img src={qr} alt="2FA QR Code" className="w-48 h-48" />}
+    return (
+        <div className={styles.container}>
+        <h2 className={styles.nameh1}>Set up Two-Factor Authentication</h2>
+        {qr && <img src={qr} alt="2FA QR Code" className={styles.qrSize} />}
         <input
-            className="border p-2 rounded"
+            className={styles.inputgroup}
             placeholder="Enter code from Authenticator"
             value={code}
             onChange={(e) => setCode(e.target.value)}
         />
-        <button onClick={verify} className="bg-blue-500 text-white px-4 py-2 rounded">
+        <button className={styles.submit2FACode} onClick={verify}>
             Verify
         </button>
         {success && <p className="text-green-500">✅ 2FA successfully enabled!</p>}

@@ -85,6 +85,11 @@ a:hover {
     text-decoration: underline;
 }
 
+.qrSize {
+    width: 48px;
+    height: 48px;
+}
+
 .submit2FACode {
     width: 200px;
     background: var(--submitButton);
