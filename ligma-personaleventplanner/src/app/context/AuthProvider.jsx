@@ -65,7 +65,7 @@ export default function AuthProvider({ children }) {
             const userSnap = await getDoc(doc(db, "userInfo", u.uid));
 
             if (!userSnap.exists()) {
-                console.log("New Google User: ", uid);
+                console.log("New Google User: ", u.uid);
                 await setDoc(doc(db, "userInfo", u.uid), {
                     email: u.email,
                     username: u.displayName,
