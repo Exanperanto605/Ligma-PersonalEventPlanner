@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { auth } from "../../context/firebaseConfig";
+import { auth } from "../context/firebaseConfig";
 
 export default function Setup2FA() {
     const [qr, setQr] = useState("");

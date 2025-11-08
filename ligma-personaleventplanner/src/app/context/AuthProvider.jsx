@@ -3,7 +3,7 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut as firebaseSignOut, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from "react";
 import { auth, googleAuthProvider, db } from './firebaseConfig.js';
-import { doc, getDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { UserAuthContext } from './auth-context';
 import { useRouter } from 'next/navigation';
 
@@ -11,10 +11,20 @@ export default function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const router = useRouter();
 
-    const signUpWithEmailPW = async (email, password) => {
+    const signUpWithEmailPW = async (email, username, dateOfBirth, password) => {
         try {
-            const result = await createUserWithEmailAndPassword(auth, email, username, dateOfBirth, password);
+            const result = await createUserWithEmailAndPassword(auth, email, password);
             const u = auth.currentUser || result.user;
+
+            const formattedDate = new Date(dateOfBirth).toISOString().split("T")[0];
+
+            await setDoc(doc(db, "userInfo", u.uid), {
+                email,
+                username,
+                dateOfBirth: formattedDate,
+                createAt: new Date()
+            });
+
             const normalized = normalizeUser(u);
             setUser(normalized);
             return result;
@@ -35,7 +45,11 @@ export default function AuthProvider({ children }) {
             return result;
         } catch (error) {
             console.error(`Sign-in error: ${error}`);
-            try { router.push('/401'); } catch(e) { /* ignore */ } // Placeholder
+            if (error.code === "auth/invalid-credential") {
+                /* ignore */
+            }
+            else {try { router.push('/401'); } catch(e) { /* ignore */ }}
+            
             throw error;
         }
     };
@@ -73,7 +87,7 @@ export default function AuthProvider({ children }) {
             if (snap.exists()) {
                 if (snap.data().is2FAEnabled) {
                     // Redirect the user to 2FA verification page.
-                    router.push("/auth/verify-2fa");
+                    router.push("/verify-2fa");
                 }
             }
         } catch (error) {
