@@ -81,7 +81,7 @@ function AuthContent() {
                             </div>
 
                             <div className={styles.links}>
-                                <a href="/forgot-password">Forgot password?</a>
+                                <a href="/forgot-pw">Forgot password?</a>
                                 <a href="/create-user">Register</a>
                             </div>
 
