@@ -26,9 +26,9 @@ function CreateNewAccount() {
         setPwError("");
 
         if (password !== confirmPassword) {
-            setPwError("Both passwords must match. :(");
             return;
         }
+        
         if (isStrongPW(password)) {
             setPwError("A password must be at least 8 characters long and include"<br>"uppercase and lowercase letters, numbers, and special characters.");
             return;
