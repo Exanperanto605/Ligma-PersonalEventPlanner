@@ -25,12 +25,12 @@ function CreateNewAccount() {
         setEmailError("");
         setPwError("");
 
-        if (password !== confirmPassword) {
+        if (!isStrongPW(password)) {
+            setPwError("A password must be at least 8 characters long and include \n uppercase and lowercase alphabets, numbers, and special characters.");
             return;
         }
-        
-        if (isStrongPW(password)) {
-            setPwError("A password must be at least 8 characters long and include"<br>"uppercase and lowercase letters, numbers, and special characters.");
+
+        if (password !== confirmPassword) {
             return;
         }
 
@@ -158,6 +158,7 @@ function CreateNewAccount() {
                         required
                     />
                     </div>
+                    <p className={"text-xs text-red-500"}>{pwError ? `${pwError}` : ""}</p>
 
                     <div className={styles.inputgroup}>
                     <label htmlFor="confirm-password">Confirm Password</label>
