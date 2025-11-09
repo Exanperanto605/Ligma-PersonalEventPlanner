@@ -29,6 +29,10 @@ function CreateNewAccount() {
             setPwError("Both passwords must match. :(");
             return;
         }
+        if (isStrongPW(password)) {
+            setPwError("A password must be at least 8 characters long and include"<br>"uppercase and lowercase letters, numbers, and special characters.");
+            return;
+        }
 
         try {
             await signUpWithEmailPW(email, username, dateOfBirth, password);
@@ -56,6 +60,22 @@ function CreateNewAccount() {
         else {
             setdateError("Please enter a valid date in YYYY-MM-DD format.");
         }
+    }
+
+    const isStrongPW = (pw) => {
+        const minLength = 8;
+        const hasUpperCase = /[A-Z]/;
+        const hasLowerCase = /[a-z]/;
+        const hasNumber = /\d/;
+        const hasSpecChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+
+        return (
+            pw.length >= minLength &&
+            hasUpperCase.test(pw) &&
+            hasLowerCase.test(pw) &&
+            hasNumber.test(pw) &&
+            hasSpecChar.test(pw)
+        );
     }
 
     // Date Format Thing
