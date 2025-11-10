@@ -48,7 +48,7 @@
 .inputgroup {
     display: block;
     text-align: left;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     justify-self: center;
 }
 
@@ -100,6 +100,7 @@ a:hover {
     color: white;
     font-size: 15px;
     font-weight: 600;
+    margin-top: 8px;
     padding: 12px 0;
     cursor: pointer;
     transition: background 0.2s ease;
