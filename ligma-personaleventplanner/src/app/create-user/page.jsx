@@ -119,7 +119,9 @@ function CreateNewAccount() {
                         required
                     />
                     </div>
-                    <p className={"text-xs text-red-500"}>{emailError ? `${emailError}` : ""}</p>
+                    <p className={"text-xs text-red-500"}>
+                    {emailError ? `${emailError}` : ""}
+                    </p>
 
                     <div className={styles.inputgroup}>
                     <label htmlFor="username">Username</label>
@@ -145,7 +147,9 @@ function CreateNewAccount() {
                         required
                     />
                     </div>
-                    <p className={"text-xs text-red-500"}>{dateError ? `${dateError}` : ""}</p>
+                    <p className={"text-xs text-red-500"}>
+                    {dateError ? `${dateError}` : ""}
+                    </p>
 
                     <div className={styles.inputgroup}>
                     <label htmlFor="password">Password</label>
@@ -158,7 +162,9 @@ function CreateNewAccount() {
                         required
                     />
                     </div>
-                    <p className={"text-xs text-red-500"}>{pwError ? `${pwError}` : ""}</p>
+                    <p className={"text-xs text-red-500"}>
+                    {pwError ? `${pwError}` : ""}
+                    </p>
 
                     <div className={styles.inputgroup}>
                     <label htmlFor="confirm-password">Confirm Password</label>
@@ -172,10 +178,22 @@ function CreateNewAccount() {
                     />
                     </div>
 
-                    <p className={`text-xs ${password === confirmPassword ? "text-lime-600" : "text-red-600"}`}>
-                        {(!password || !confirmPassword) ? "" : ((password === confirmPassword) ? "Passwords match. All good! :)" : "Both passwords must match. :(")}
+                    <p
+                    className={`text-xs ${
+                        password === confirmPassword ? "text-lime-600" : "text-red-600"
+                    }`}
+                    >
+                    {!password || !confirmPassword
+                        ? ""
+                        : password === confirmPassword
+                        ? "Passwords match. All good! :)"
+                        : "Both passwords must match. :("}
                     </p>
-                    <button className={styles.submit} type="submit" onClick={handleSignUpWithEmailPW}>
+                    <button
+                    className={styles.submit}
+                    type="submit"
+                    onClick={handleSignUpWithEmailPW}
+                    >
                     Submit
                     </button>
 

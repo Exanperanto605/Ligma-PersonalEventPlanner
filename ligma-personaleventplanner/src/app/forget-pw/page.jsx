@@ -27,12 +27,47 @@ export default function forgetPassword() {
             }
             else {
                 setError("Soemthing went wrong. Please try again later.")
-                console.error(`Error: ${err}`);
             }
         }
     }
 
     return (
-        // HTML Markup
+        <div className={styles.container}>
+            <div className={styles.card}>
+                <h1 className={styles.nameh1}>Reset your password</h1>
+                <p className={styles.subtitle}>Submit your email address linked to your account<br/>to receive the password reset email.</p>
+                <form onSubmit={handlePasswordReset}>
+                    <div className={styles.inputgroup}>
+                    <label htmlFor="email">Email</label>
+                    <input
+                        id="email"
+                        type="email"
+                        placeholder="something@email.smth"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                    </div>
+                    <p className={"text-xs text-red-500"}>
+                    {error ? `${error}` : ""}
+                    </p>
+                    <p className={"text-xs text-lime-500"}>
+                    {message ? `${message}` : ""}
+                    </p>
+
+                    <button
+                    className={styles.submit}
+                    type="submit"
+                    onClick={handlePasswordReset}
+                    >
+                    Submit
+                    </button>
+
+                    <div className={styles.links}>
+                    <a href="/">← Back to Log In</a>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 }
