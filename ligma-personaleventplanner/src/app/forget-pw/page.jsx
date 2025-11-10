@@ -2,8 +2,7 @@
 
 import { auth } from "../context/firebaseConfig";
 import { sendPasswordResetEmail } from "firebase/auth";
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import styles from "./styles/forget-pw_style.module.css"
 
 export default function forgetPassword() {
