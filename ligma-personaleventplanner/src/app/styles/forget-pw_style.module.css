@@ -24,30 +24,32 @@
     border-radius: var(--radius);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     width: 95%;
-    max-width: 360px;
+    max-width: 480px;
     text-align: center;
+    align-items: center;
 }
 
 .nameh1 {
-    font-size: 45px;
     font-weight: 600;
     margin: 0;
 }
 
 @media (min-width:640px){
     .card{padding:40px 36px}
-    .nameh1{font-size:48px}
+    .nameh1{font-size:40px}
 }
 
 .subtitle {
     color: var(--muted);
     font-size: 16px;
-    margin-bottom: 28px;
+    margin-bottom: 16px;
 }
 
 .inputgroup {
+    display: block;
     text-align: left;
     margin-bottom: 16px;
+    justify-self: center;
 }
 
 .inputgroup label {
@@ -59,7 +61,7 @@
 }
 
 .inputgroup input {
-    width: 100%;
+    width: 250px;
     padding: 10px 12px;
     border-radius: var(--radius);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -76,9 +78,8 @@ input:focus {
 
 .links {
     display: flex;
-    justify-content: space-between;
-    margin-top: 8px;
-    margin-bottom: 24px;
+    justify-content: center;
+    margin-top: 16px;
 }
 
 .links a {

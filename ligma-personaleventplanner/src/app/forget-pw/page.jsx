@@ -3,7 +3,7 @@
 import { auth } from "../context/firebaseConfig";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { useState } from 'react';
-import styles from "./styles/forget-pw_style.module.css"
+import styles from "../styles/forget-pw_style.module.css"
 
 export default function forgetPassword() {
     const [email, setEmail] = useState("");
@@ -35,18 +35,18 @@ export default function forgetPassword() {
         <div className={styles.container}>
             <div className={styles.card}>
                 <h1 className={styles.nameh1}>Reset your password</h1>
-                <p className={styles.subtitle}>Submit your email address linked to your account<br/>to receive the password reset email.</p>
+                <p className={styles.subtitle}>Submit your email address linked to your account to receive the password reset email.</p>
                 <form onSubmit={handlePasswordReset}>
                     <div className={styles.inputgroup}>
-                    <label htmlFor="email">Email</label>
-                    <input
-                        id="email"
-                        type="email"
-                        placeholder="something@email.smth"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
+                        <label htmlFor="email">Email</label>
+                        <input
+                            id="email"
+                            type="email"
+                            placeholder="something@email.smth"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
                     </div>
                     <p className={"text-xs text-red-500"}>
                     {error ? `${error}` : ""}
