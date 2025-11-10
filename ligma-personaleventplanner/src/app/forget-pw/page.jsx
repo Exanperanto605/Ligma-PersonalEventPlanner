@@ -28,6 +28,7 @@ export default function forgetPassword() {
             else {
                 setError("Soemthing went wrong. Please try again later.")
             }
+            console.error(err); // DEBUG
         }
     }
 
@@ -48,11 +49,8 @@ export default function forgetPassword() {
                             required
                         />
                     </div>
-                    <p className={"text-xs text-red-500"}>
-                    {error ? `${error}` : ""}
-                    </p>
-                    <p className={"text-xs text-lime-500"}>
-                    {message ? `${message}` : ""}
+                    <p className={error && !message ? "text-xs text-red-500" : "text-xs text-lime-500"}>
+                    {error ? `${error}` : (message ? `${message}`: "")}
                     </p>
 
                     <button
