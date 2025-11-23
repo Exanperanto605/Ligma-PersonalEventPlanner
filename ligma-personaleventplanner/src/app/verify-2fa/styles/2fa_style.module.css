@@ -1,0 +1,6 @@
+.container { padding: 24px; display: flex; justify-content: center; }
+.card { max-width: 420px; width: 100%; background: #0f0f0f; border: 1px solid #222; border-radius: 8px; padding: 16px; }
+.nameh1 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+.subtitle { font-size: 14px; opacity: 0.8; margin-bottom: 12px; }
+.inputgroup input { width: 100%; padding: 8px 10px; background: #1a1a1a; border: 1px solid #333; border-radius: 6px; color: #fff; }
+.submit2FACode { margin-top: 12px; padding: 8px 12px; background: #4285f4; color: white; border-radius: 6px; }

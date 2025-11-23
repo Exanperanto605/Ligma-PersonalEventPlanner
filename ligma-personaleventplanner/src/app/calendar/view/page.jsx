@@ -16,6 +16,7 @@ import {
 import { Menu, Search, Filter, Plus, ChevronLeft, ChevronRight, RefreshCw, LogOut, Settings, Calendar, Pencil, Trash } from "lucide-react"
 import TimePicker from "@/components/ui/time-picker"
 import { subscribeUserEvents, addUserEvent, updateUserEvent, deleteUserEvent, deleteLegacyUserEvent } from "../../context/eventsStore"
+import { subscribeUserTodos, addUserTodo, updateUserTodo, deleteUserTodo } from "../../context/todoStore"
 import { UserAuthContext } from "../../context/auth-context"
 
 // No seeded events; everything comes from Firestore per-user
@@ -57,6 +58,13 @@ export default function CalendarViewPage() {
   const [selectedMonth, setSelectedMonth] = useState(todayInit.getMonth())
   const [selectedYear, setSelectedYear] = useState(todayInit.getFullYear())
   const [todos, setTodos] = useState(todoItems)
+  const [isTodoModalOpen, setIsTodoModalOpen] = useState(false)
+  const [editingTodo, setEditingTodo] = useState(null)
+  const [todoLabel, setTodoLabel] = useState("")
+  const [todoNote, setTodoNote] = useState("")
+  const [isSyncing, setIsSyncing] = useState(false)
+  const [lastSynced, setLastSynced] = useState(null)
+  const [syncError, setSyncError] = useState(null)
   const [currentMonth, setCurrentMonth] = useState(todayInit.getMonth()) // 0-indexed
   const [currentYear, setCurrentYear] = useState(todayInit.getFullYear())
   const [eventsData, setEventsData] = useState(initialEventsByDay)
@@ -108,24 +116,82 @@ export default function CalendarViewPage() {
     el.click?.()
   }
 
-  const toggleTodo = (id) => {
-    setTodos(todos.map((todo) => (todo.id === id ? { ...todo, checked: !todo.checked } : todo)))
+  const openAddTodoModal = () => {
+    setEditingTodo(null)
+    setTodoLabel("")
+    setTodoNote("")
+    setIsTodoModalOpen(true)
   }
 
+  const openEditTodo = (todo) => {
+    setEditingTodo(todo)
+    setTodoLabel(todo.label || "")
+    setTodoNote(todo.note || "")
+    setIsTodoModalOpen(true)
+  }
+
+  const closeTodoModal = () => {
+    setIsTodoModalOpen(false)
+    setEditingTodo(null)
+  }
+
+  const toggleTodo = async (todo, nextCheckedVal) => {
+    const nextChecked = typeof nextCheckedVal === "boolean" ? nextCheckedVal : !todo.checked
+    setTodos((prev) => prev.map((t) => (t.id === todo.id ? { ...t, checked: nextChecked } : t)))
+    try { if (user?.uid) await updateUserTodo(user.uid, todo.id, { checked: nextChecked }) } catch (_) { /* ignore */ }
+  }
+
+  const handleSaveTodo = async (e) => {
+    e?.preventDefault?.()
+    const label = todoLabel.trim()
+    if (!label) return
+    if (editingTodo) {
+      const updated = { ...editingTodo, label, note: todoNote }
+      setTodos((prev) => prev.map((t) => (t.id === editingTodo.id ? updated : t)))
+      try { if (user?.uid) await updateUserTodo(user.uid, editingTodo.id, { label, note: todoNote }) } catch (_) { /* ignore */ }
+    } else {
+      const tempId = `tmp-${Date.now()}`
+      const newItem = { id: tempId, label, note: todoNote, checked: false }
+      setTodos((prev) => [...prev, newItem])
+      try {
+        if (user?.uid) {
+          const realId = await addUserTodo(user.uid, label, todoNote)
+          setTodos((prev) => prev.map((t) => (t.id === tempId ? { ...t, id: realId } : t)))
+        }
+      } catch (_) { /* ignore */ }
+    }
+    setIsTodoModalOpen(false)
+    setEditingTodo(null)
+  }
+
+  const handleDeleteTodo = async (todo) => {
+    setTodos((prev) => prev.filter((t) => t.id !== todo.id))
+    try { if (user?.uid) await deleteUserTodo(user.uid, todo.id) } catch (_) { /* ignore */ }
+    if (editingTodo && editingTodo.id === todo.id) {
+      setIsTodoModalOpen(false)
+      setEditingTodo(null)
+    }
+  }
+
+  // Avatar: try Google photo via proxy; fall back to first letter
   const avatarUrl = useMemo(() => {
     const raw = user?.photoURL || user?.providerData?.[0]?.photoURL || ""
     if (!raw) return ""
     try {
       const u = new URL(raw)
       if (u.hostname.endsWith("googleusercontent.com") && !u.searchParams.has("sz")) {
-        u.searchParams.set("sz", "64")
-        const adjusted = u.toString()
-        return `/api/avatar?u=${encodeURIComponent(adjusted)}`
+        u.searchParams.set("sz", "96")
       }
-      return `/api/avatar?u=${encodeURIComponent(raw)}`
+      return `/api/avatar?u=${encodeURIComponent(u.toString())}`
     } catch {
-      return `/api/avatar?u=${encodeURIComponent(raw)}`
+      return ""
     }
+  }, [user])
+  const avatarLetter = useMemo(() => {
+    const fromDisplay = (user?.displayName || "").trim()
+    const fromEmail = (user?.email || "").trim()
+    const ch = fromEmail?.[0] || fromDisplay?.[0] || "U"
+    return ch.toUpperCase()
   }, [user])
 
   const monthNames = [
@@ -165,6 +231,20 @@ export default function CalendarViewPage() {
     const today = new Date()
     setCurrentMonth(today.getMonth())
     setCurrentYear(today.getFullYear())
+  }
+
+  const handleManualSync = async () => {
+    if (isSyncing) return
+    setIsSyncing(true)
+    setSyncError(null)
+    try {
+      await new Promise((r) => setTimeout(r, 1500))
+      setLastSynced(new Date())
+    } catch (e) {
+      setSyncError(e?.message || "Sync failed")
+    } finally {
+      setIsSyncing(false)
+    }
   }
 
   const handleLogout = async () => {
@@ -408,6 +488,22 @@ export default function CalendarViewPage() {
     return () => unsub && unsub()
   }, [user?.uid])
 
+  // Subscribe to user's to-dos
+  useEffect(() => {
+    if (!user?.uid) return
+    const unsub = subscribeUserTodos(
+      user.uid,
+      (items) => setTodos(items),
+      (err) => {
+        const msg = err?.code === 'permission-denied'
+          ? 'ไม่มีสิทธิ์อ่านรายการงาน โปรดตรวจสอบ Firestore Rules'
+          : (err?.message || 'เกิดข้อผิดพลาดในการอ่านรายการงาน')
+        setToast({ message: msg, variant: 'danger' })
+      }
+    )
+    return () => unsub && unsub()
+  }, [user?.uid])
+
   const openAddModal = () => {
     const pad = (n) => String(n).padStart(2, "0")
     const now = new Date()
@@ -578,6 +674,52 @@ export default function CalendarViewPage() {
           {toast.message}
         </div>
       )}
+      {/* To-do Modal */}
+      {isTodoModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/60" onClick={closeTodoModal} />
+          <div className="relative z-10 w-full max-w-md rounded-xl border border-gray-800 bg-[#0f0f0f] p-6 shadow-xl">
+            <h3 className="text-2xl font-semibold mb-4 text-center">{editingTodo ? "Edit task" : "Add task"}</h3>
+            <form onSubmit={handleSaveTodo} className="space-y-4">
+              <div>
+                <label className="block text-sm text-gray-300 mb-1">Task</label>
+                <input
+                  className="w-full rounded-md bg-[#1a1a1a] border border-gray-800 px-3 py-2 text-sm outline-none focus:border-gray-600"
+                  placeholder="What do you need to do?"
+                  value={todoLabel}
+                  onChange={(e) => setTodoLabel(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-300 mb-1">Details (optional)</label>
+                <textarea
+                  className="w-full rounded-md bg-[#1a1a1a] border border-gray-800 px-3 py-2 text-sm outline-none focus:border-gray-600 resize-none"
+                  rows={3}
+                  placeholder="Add more context"
+                  value={todoNote}
+                  onChange={(e) => setTodoNote(e.target.value)}
+                />
+              </div>
+              <div className="flex items-center justify-between gap-2 pt-2">
+                {editingTodo ? (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="text-red-500 hover:text-red-400 hover:bg-transparent"
+                    onClick={() => handleDeleteTodo(editingTodo)}
+                  >
+                    Delete
+                  </Button>
+                ) : <div />}
+                <div className="flex items-center gap-2">
+                  <Button type="button" variant="ghost" onClick={closeTodoModal}>Cancel</Button>
+                  <Button type="submit" disabled={!todoLabel.trim()}>{editingTodo ? "Save" : "Add"}</Button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       {/* Left Sidebar */}
   <div className="relative bg-[#0f0f0f] border-r border-gray-800 flex flex-col overflow-hidden md:flex-shrink-0" style={isSmallScreen ? { width: '100%' } : { width: sidebarWidth }}>
         {/* Mini Calendar */}
@@ -686,9 +828,9 @@ export default function CalendarViewPage() {
 
           {/* To-do List */}
           <div className="p-4">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-3">
               <h2 className="text-lg font-semibold">To-do list</h2>
-              <Button size="icon" variant="ghost" className="h-6 w-6">
+              <Button size="icon" variant="ghost" className="h-6 w-6" onClick={openAddTodoModal}>
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
@@ -701,7 +843,7 @@ export default function CalendarViewPage() {
                     <Checkbox
                       id={todo.id}
                       checked={todo.checked}
-                      onCheckedChange={() => toggleTodo(todo.id)}
+                      onChange={(e) => toggleTodo(todo, e.target.checked)}
                       className="border-gray-600"
                     />
                     <label
@@ -710,6 +852,10 @@ export default function CalendarViewPage() {
                     >
                       {todo.label}
                     </label>
+                    <div className="flex-1" />
+                    <Button size="sm" variant="ghost" className="h-7 px-2 text-white hover:text-white hover:bg-white/10" type="button" onClick={() => openEditTodo(todo)}>
+                      <Pencil className="h-3.5 w-3.5" />
+                    </Button>
                   </div>
                 ))}
               </div>
@@ -736,9 +882,16 @@ export default function CalendarViewPage() {
               <Button size="icon" variant="ghost" onClick={goToNextMonth}>
                 <ChevronRight className="h-5 w-5" />
               </Button>
-              <Button size="icon" variant="ghost" onClick={goToToday}>
-                <RefreshCw className="h-5 w-5" />
-              </Button>
+              <div className="flex items-center gap-2 pl-2">
+                <Button size="icon" variant="ghost" onClick={handleManualSync} className="relative">
+                  {isSyncing && <span className="absolute inset-0 animate-spin text-white/60 flex items-center justify-center"><RefreshCw className="h-4 w-4" /></span>}
+                  {!isSyncing && <RefreshCw className="h-5 w-5" />}
+                </Button>
+                <span className="text-xs text-gray-400 min-w-[110px]">
+                  {isSyncing ? "Syncing..." : lastSynced ? `Synced ${lastSynced.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : "Not synced yet"}
+                </span>
+                {syncError && <span className="text-xs text-red-400">{syncError}</span>}
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -757,10 +910,9 @@ export default function CalendarViewPage() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="h-8 w-8 rounded-full p-0">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={avatarUrl} alt={user?.displayName || user?.email} />
-                    <AvatarFallback>
-                      {user?.displayName ? user.displayName[0].toUpperCase() : 
-                       user?.email ? user.email[0].toUpperCase() : 'U'}
+                    {avatarUrl ? <AvatarImage src={avatarUrl} alt={user?.displayName || user?.email} /> : null}
+                    <AvatarFallback fallbackText={avatarLetter}>
+                      {avatarLetter}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
