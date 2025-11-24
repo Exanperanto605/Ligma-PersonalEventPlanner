@@ -3,13 +3,13 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyATu0GiahKhqmpyTaxUo1uSqsO0DppghGg",
-    authDomain: "ligma-personaleventplanner.firebaseapp.com",
-    projectId: "ligma-personaleventplanner",
-    storageBucket: "ligma-personaleventplanner.firebasestorage.app",
-    messagingSenderId: "66250269201",
-    appId: "1:66250269201:web:c13ce91a58ae0d50f647b0",
-    measurementId: "G-82BB3BME5H"
+    apiKey: NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: NEXT_PUBLIC_FIREBASE_APP_ID,
+    measurementId: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
