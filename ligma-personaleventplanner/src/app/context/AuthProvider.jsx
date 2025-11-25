@@ -47,11 +47,7 @@ export default function AuthProvider({ children }) {
             return result;
         } catch (error) {
             console.error(`Sign-in error: ${error}`);
-            if (error.code === "auth/invalid-credential") {
-                /* ignore */
-            }
-            else {try { router.push('/401'); } catch(e) { /* ignore */ }}
-            
+            // keep user on login page, surface error to caller/UI
             throw error;
         }
     };
@@ -82,8 +78,7 @@ export default function AuthProvider({ children }) {
             return result;
         } catch (error) {
             console.error(`Sign-in error: ${error}`);
-            // client-side navigation to an unauthorized page (optional)
-            try { router.push('/401'); } catch(e) { /* ignore */ }
+            // stay on login page and let UI show error
             throw error;
         }
     };
