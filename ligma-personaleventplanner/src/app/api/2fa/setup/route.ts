@@ -7,7 +7,6 @@ import QRCode from "qrcode";
 import { db } from '@/app/context/firebaseConfig.js'
 import { doc, setDoc } from "firebase/firestore";
 
-
 export async function POST(req: Request) {
     const { userID, email } = await req.json();
 
