@@ -1,7 +1,10 @@
-# Required for Cloudflare Pages + Next.js
+# REQUIRED: Cloudflare Pages project name
+name = "ligma-personaleventplanner"
+
+# REQUIRED: Build output directory for Pages + Next-on-Pages
 pages_build_output_dir = ".vercel/output/static"
 
-# Enable Node.js compatibility for Workers
-compatibility_flags = ["nodejs_compat"]
-
+# REQUIRED: For Workers runtime features (e.g., node:buffer, async_hooks)
 compatibility_date = "2024-01-01"
+
+compatibility_flags = ["nodejs_compat"]
