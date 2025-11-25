@@ -43,7 +43,7 @@ export default function AuthProvider({ children }) {
             const u = auth.currentUser || result.user;
             const normalized = normalizeUser(u);
             setUser(normalized);
-            await verify2FA(normalized);
+            // 2FA disabled; no verification/redirect
             return result;
         } catch (error) {
             console.error(`Sign-in error: ${error}`);
@@ -78,7 +78,7 @@ export default function AuthProvider({ children }) {
 
             const normalized = normalizeUser(u);
             setUser(normalized);
-            await verify2FA(normalized);
+            // 2FA disabled; no verification/redirect
             return result;
         } catch (error) {
             console.error(`Sign-in error: ${error}`);
@@ -93,24 +93,8 @@ export default function AuthProvider({ children }) {
         setUser(null);
     };
 
-    // 2FA Redirect
-    async function verify2FA(user) {
-        if (!user?.uid) return;
-
-        try {
-            const ref = doc(db, "users", user.uid);
-            const snap = await getDoc(ref);
-
-            if (snap.exists()) {
-                if (snap.data().is2FAEnabled) {
-                    // Redirect the user to 2FA verification page.
-                    router.push("/verify-2fa");
-                }
-            }
-        } catch (error) {
-            console.error(`2FA checking error: ${error}`);
-        }
-    }
+    // 2FA disabled: no-op
+    async function verify2FA() { return; }
 
     // Normalize User
     function normalizeUser(u) {
