@@ -4,6 +4,7 @@ import speakeasy from "speakeasy";
 import { db } from '@/app/context/firebaseConfig.js'
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { error } from "console";
+export const runtime = 'edge';
 
 export async function POST(req: Request) {
     const { userID, token } = await req.json();
