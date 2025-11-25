@@ -47,7 +47,10 @@ export default function AuthProvider({ children }) {
             return result;
         } catch (error) {
             console.error(`Sign-in error: ${error}`);
-            // keep user on login page, surface error to caller/UI
+            // หาก credential ไม่ถูกต้อง ให้อยู่หน้าเดิม แต่ถ้า error อื่นให้พาไป /401
+            if (error.code !== "auth/invalid-credential") {
+                try { router.push('/401'); } catch (_) { /* ignore */ }
+            }
             throw error;
         }
     };
@@ -78,7 +81,7 @@ export default function AuthProvider({ children }) {
             return result;
         } catch (error) {
             console.error(`Sign-in error: ${error}`);
-            // stay on login page and let UI show error
+            try { router.push('/401'); } catch (_) { /* ignore */ }
             throw error;
         }
     };
