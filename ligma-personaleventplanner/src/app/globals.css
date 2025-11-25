@@ -3,6 +3,16 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Auth/Forms theme vars */
+  --bg: #333333;
+  --card: #1c1c1c;
+  --titlecard: #323232;
+  --accent: #6366f1;
+  --emailButton: #2c2c2c;
+  --googleButton: #4285f4;
+  --submitButton: #2c2c2c;
+  --muted: #94a3b8;
+  --radius: 12px;
 }
 
 @theme inline {
@@ -76,6 +86,14 @@ input[type="time"]::-webkit-datetime-edit-hour-field,
 input[type="time"]::-webkit-datetime-edit-minute-field,
 input[type="time"]::-webkit-datetime-edit-text {
   color: var(--foreground);
+}
+/* Global focus state for inputs */
+input:focus {
+  border-color: var(--accent);
+}
+/* Global link hover */
+a:hover {
+  text-decoration: underline;
 }
 /* Custom timepicker dropdown colors */
 .timepicker select {
