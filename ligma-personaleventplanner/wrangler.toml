@@ -3,7 +3,7 @@ pages_build_output_dir = ".vercel/output/static"
 compatibility_date = "2025-11-25"
 compatibility_flags = ["nodejs_compat"]
 [vars]
-NEXT_PUBLIC_FIREBASE_API_KEY = "AlzaSyATu0GiahKhqmpyTaxUo1uSqsO0DppghGg"
+NEXT_PUBLIC_FIREBASE_API_KEY = "AIzaSyATu0GiahKhqmpyTaxUo1uSqsO0DppghGg"
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN = "ligma-personaleventplanner.firebaseapp.com"
 NEXT_PUBLIC_FIREBASE_PROJECT_ID = "ligma-personaleventplanner"
 NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET = "ligma-personaleventplanner.firebasestorage.app"
