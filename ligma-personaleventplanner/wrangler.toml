@@ -1,7 +1,7 @@
-name = "ligma-personaleventplanner"
-compatibility_date = "2025-11-25"
+# Required for Cloudflare Pages + Next.js
+pages_build_output_dir = ".vercel/output/static"
 
-compatibility_flags = [
-  "nodejs_compat",
-  "enable_ctx_exports"
-]
+# Enable Node.js compatibility for Workers
+compatibility_flags = ["nodejs_compat"]
+
+compatibility_date = "2024-01-01"
