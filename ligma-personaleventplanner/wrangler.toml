@@ -5,6 +5,6 @@ name = "ligma-personaleventplanner"
 pages_build_output_dir = ".vercel/output/static"
 
 # REQUIRED: For Workers runtime features (e.g., node:buffer, async_hooks)
-compatibility_date = "2024-01-01"
+compatibility_date = "2025-11-25"
 
 compatibility_flags = ["nodejs_compat"]
