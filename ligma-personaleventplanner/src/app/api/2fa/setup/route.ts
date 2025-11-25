@@ -4,6 +4,7 @@ import QRCode from "qrcode";
 // import { db } from '@/app/context/firebaseConfig.js' <-- Real
 import { db } from '@/app/context/firebaseConfig.js'
 import { doc, setDoc } from "firebase/firestore";
+export const runtime = 'edge';
 
 export async function POST(req: Request) {
     const { userID, email } = await req.json();
