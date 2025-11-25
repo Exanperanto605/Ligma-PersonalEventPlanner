@@ -1,0 +1,7 @@
+name = "ligma-personaleventplanner"
+compatibility_date = "2025-11-25"
+
+compatibility_flags = [
+  "nodejs_compat",
+  "enable_ctx_exports"
+]
