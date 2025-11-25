@@ -17,7 +17,6 @@
     "speakeasy": "^2.0.0"
   },
   "devDependencies": {
-    "@opennextjs/cloudflare": "^1.13.1",
     "@playwright/test": "^1.56.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
